@@ -101,6 +101,18 @@ class Cube:
         self.update_centers()
         self.rotates = []
 
+    def reset(self):
+        """
+        Reset the Cube
+        """
+        self.cube = {'F': [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
+                     'U': [[1, 1, 1], [1, 1, 1], [1, 1, 1]],
+                     'L': [[2, 2, 2], [2, 2, 2], [2, 2, 2]],
+                     'R': [[3, 3, 3], [3, 3, 3], [3, 3, 3]],
+                     'D': [[4, 4, 4], [4, 4, 4], [4, 4, 4]],
+                     'B': [[5, 5, 5], [5, 5, 5], [5, 5, 5]]}
+        self.rotates = []
+
     def rotate(self, side):
         self.dire[side]()
 
