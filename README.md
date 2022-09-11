@@ -6,7 +6,7 @@ Support this project by leaving a :star:
 
 ## Program Description
 
-**The Program solves the cube in the following steps:**
+**The Program works on "CFOP" algorithm and solves the cube in the following steps:**
  - First Layer
    - Daisy
    - White Cross

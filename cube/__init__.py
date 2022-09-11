@@ -49,20 +49,19 @@
 
     Solution of the cube is stored in an array (Cube.rotates)
     The Solution Array contains integers that represents rotations as:
-        1: Rotate FRONT (White Face) side Clockwise
-        -1: Rotate FRONT (White Face) side Anti Clockwise
-        2: Rotate UP (Green Face) side Clockwise
-        -2: Rotate UP (Green Face) side Anti Clockwise
-        3: Rotate LEFT (Red Face) side Clockwise
-        -3: Rotate LEFT (Red Face) side Anti Clockwise
-        4: Rotate RIGHT (Opposite Face of Red) side Clockwise
-        -4: Rotate RIGHT (Opposite Face of Red) side Anti Clockwise
-        5: Rotate DOWN (Opposite Face of Green) side Clockwise
-        -5: Rotate DOWN (Opposite Face of Green) side Anti Clockwise
-        6: Rotate BACK (Opposite Face of White) side Clockwise
-        -6: Rotate BACK (Opposite Face of White) side Anti Clockwise
+        1: Rotate FRONT (White) side Clockwise
+        -1: Rotate FRONT (White) side Anti Clockwise
+        2: Rotate UP (Green) side Clockwise
+        -2: Rotate UP (Green) side Anti Clockwise
+        3: Rotate LEFT (Red) side Clockwise
+        -3: Rotate LEFT (Red) side Anti Clockwise
+        4: Rotate RIGHT (Opposite of Red) side Clockwise
+        -4: Rotate RIGHT (Opposite of Red) side Anti Clockwise
+        5: Rotate DOWN (Opposite of Green) side Clockwise
+        -5: Rotate DOWN (Opposite of Green) side Anti Clockwise
+        6: Rotate BACK (Opposite of White) side Clockwise
+        -6: Rotate BACK (Opposite of White) side Anti Clockwise
 """
-
 
 from random import choice
 
@@ -78,23 +77,23 @@ class Cube:
                          'B': [[5, 5, 5], [5, 5, 5], [5, 5, 5]]}
         else:
             self.cube = cube
-        self.func = {'F': self.F, 'U': self.U, 
-                     'L': self.L, 'R': self.R, 
+        self.func = {'F': self.F, 'U': self.U,
+                     'L': self.L, 'R': self.R,
                      'D': self.D, 'B': self.B}
-        self.anti_func = {'F': self.F_, 'U': self.U_, 
-                          'L': self.L_, 'R': self.R_, 
+        self.anti_func = {'F': self.F_, 'U': self.U_,
+                          'L': self.L_, 'R': self.R_,
                           'D': self.D_, 'B': self.B_}
-        self.opps = {'F': 'B', 'B': 'F', 'U': 'D', 
+        self.opps = {'F': 'B', 'B': 'F', 'U': 'D',
                      'D': 'U', 'L': 'R', 'R': 'L'}
-        self.values = {'F': 0, 'U': 1, 'L': 2, 
+        self.values = {'F': 0, 'U': 1, 'L': 2,
                        'R': 3, 'D': 4, 'B': 5}
-        self.itv = {0: 'F', 1: 'U', 2: 'L', 
+        self.itv = {0: 'F', 1: 'U', 2: 'L',
                     3: 'R', 4: 'D', 5: 'B'}
-        self.dire = {'F': self.F, 'F_': self.F_, 
+        self.dire = {'F': self.F, 'F_': self.F_,
                      'U': self.U, 'U_': self.U_,
-                     'L': self.L, 'L_': self.L_, 
-                     'R': self.R, 'R_': self.R_, 
-                     'D': self.D, 'D_': self.D_, 
+                     'L': self.L, 'L_': self.L_,
+                     'R': self.R, 'R_': self.R_,
+                     'D': self.D, 'D_': self.D_,
                      'B': self.B, 'B_': self.B_}
         self.rotates = []
         self.update_corners()
@@ -127,7 +126,7 @@ class Cube:
             f = choice(funs)
             f[c]()
         self.rotates = []
-    
+
     def update_rotates(self):
         """
         Remove Unnecessary (Repetitive) Rotations
@@ -139,7 +138,13 @@ class Cube:
                 k -= 1
                 continue
             if i < len(self.rotates) - 3:
-                if self.rotates[i] == self.rotates[i+1] == self.rotates[i+2] == self.rotates[i+3]:
+                if self.rotates[i] == self.rotates[i+1] == -self.rotates[i+2] == -self.rotates[i+3]:
+                    k = 3
+                    continue
+                elif self.rotates[i] == -self.rotates[i + 1]:
+                    k = 1
+                    continue
+                elif self.rotates[i] == self.rotates[i+1] == self.rotates[i+2] == self.rotates[i+3]:
                     k = 3
                     continue
                 elif self.rotates[i] == self.rotates[i+1] == self.rotates[i+2]:
@@ -147,19 +152,19 @@ class Cube:
                     k = 2
             temp.append(j)
         self.rotates = temp
-        
+
     def update_corners(self):
         """
         Update Corners of the Cube
         """
         f, u, l, r, d, b = self.cube['F'], self.cube['U'], self.cube['L'], self.cube['R'], self.cube['D'], self.cube['B']
-        corners = {'FUL': [f[0][0], u[2][0], l[0][2]], 
-                   'FUR': [f[0][2], u[2][2], r[0][0]], 
-                   'FDL': [f[2][0], d[0][0], l[2][2]], 
-                   'FDR': [f[2][2], d[0][2], r[2][0]], 
-                   'BUL': [b[2][0], u[0][0], l[0][0]], 
-                   'BUR': [b[2][2], u[0][2], r[0][2]], 
-                   'BDL': [b[0][0], d[2][0], l[2][0]], 
+        corners = {'FUL': [f[0][0], u[2][0], l[0][2]],
+                   'FUR': [f[0][2], u[2][2], r[0][0]],
+                   'FDL': [f[2][0], d[0][0], l[2][2]],
+                   'FDR': [f[2][2], d[0][2], r[2][0]],
+                   'BUL': [b[2][0], u[0][0], l[0][0]],
+                   'BUR': [b[2][2], u[0][2], r[0][2]],
+                   'BDL': [b[0][0], d[2][0], l[2][0]],
                    'BDR': [b[0][2], d[2][2], r[2][2]]}
         self.white_cor = {}
         self.yellow_cor = {}
@@ -169,23 +174,23 @@ class Cube:
             if 5 in corners[k]:
                 self.yellow_cor[k] = corners[k]
         self.corners = corners
-    
+
     def update_centers(self):
         """
         Update Edges of the Cube
         """
         f, u, l, r, d, b = self.cube['F'], self.cube['U'], self.cube['L'], self.cube['R'], self.cube['D'], self.cube['B']
-        c = {'FU': [f[0][1], u[2][1]], 
-             'FL': [f[1][0], l[1][2]], 
-             'FD': [f[2][1], d[0][1]], 
+        c = {'FU': [f[0][1], u[2][1]],
+             'FL': [f[1][0], l[1][2]],
+             'FD': [f[2][1], d[0][1]],
              'FR': [f[1][2], r[1][0]],
-             'BU': [b[2][1], u[0][1]], 
+             'BU': [b[2][1], u[0][1]],
              'BL': [b[1][0], l[1][0]],
              'BD': [b[0][1], d[2][1]],
-             'BR': [b[1][2], r[1][2]], 
-             'UL': [u[1][0], l[0][1]], 
-             'UR': [u[1][2], r[0][1]], 
-             'DL': [d[1][0], l[2][1]], 
+             'BR': [b[1][2], r[1][2]],
+             'UL': [u[1][0], l[0][1]],
+             'UR': [u[1][2], r[0][1]],
+             'DL': [d[1][0], l[2][1]],
              'DR': [d[1][2], r[2][1]]}
         self.s_centers = {'F': {}, 'B': {}, 'U': {},
                           'D': {}, 'L': {}, 'R': {}}
@@ -209,12 +214,18 @@ class Cube:
         for k in self.middle_cen:
             self.middle_cen[k] = c[k]
         self.centers = c
-    
+
     def solve(self):
         self.first_layer()
+        self.update_rotates()
+
         self.second_layer()
+        self.update_rotates()
+
         self.last_layer()
         self.update_rotates()
+
+        return self.rotates
 
     def first_layer(self):
         """
@@ -228,7 +239,7 @@ class Cube:
                 cen = self.s_centers[side][f'B{side}']
                 if cen[0] == 0:
                     self.func['B']()
-            
+
             next = {'L': 'U', 'U': 'R', 'R': 'D', 'D': 'L'}
             prev = {'U': 'L', 'L': 'D', 'D': 'R', 'R': 'U'}
             for n in range(4):
@@ -296,7 +307,7 @@ class Cube:
                             self.anti_func['D']()
                         else:
                             self.func['D']()
-        
+
         def white_cross():
             """
             Make White Cross
@@ -308,7 +319,7 @@ class Cube:
                     self.func['B']()
                 self.func[side]()
                 self.func[side]()
-        
+
         def white_corners():
             """
             Solve White Corners
@@ -322,40 +333,34 @@ class Cube:
                 self.anti_func['B']()
                 self.func[side[key]]()
                 self.func['B']()
-            
-            def check_pos(pos, val):
-                val.remove(0)
-                i1, i2 = self.values[pos[1]], self.values[pos[2]]
-                if i1 in val and i2 in val:
-                    return True
-                return False
-            
-            def correct(p, val):
-                v = self.values
-                if v[p[0]] == val[0] and v[p[1]] == val[1] and v[p[1]] == val[1]:
-                    return True
-                return False
-            
-            while True:
-                wc = self.white_cor
-                keys = list(wc.keys())
-                temp = None
-                for k in keys[:]:
-                    if correct(k, wc[k][:]):
-                        keys.remove(k)
-                if len(keys) == 0:
-                    return
-                k = choice(keys)
-                if check_pos(k, wc[k][:]):
-                    algo(k)
-                else:
-                    if 'F' in k:
-                        algo(k)
-                    self.func['B']()
+
+            temp_values = {'FUR': [0, 1, 3], 'FUL': [0, 1, 2],
+                           'FDR': [0, 4, 3], 'FDL': [0, 4, 2]}
+
+            neighbors = {'BUR': 'BDR', 'BUL': 'BUR',
+                         'BDR': 'BDL', 'BDL': 'BUL'}
+
+            for i in temp_values:
+                if sorted(self.corners[i]) == sorted(temp_values[i]):
+                    while self.corners[i] != temp_values[i]:
+                        algo(i)
+                    continue
+                for j in self.white_cor:
+                    if sorted(self.white_cor[j]) == sorted(temp_values[i]):
+                        if 'F' in j:
+                            algo(j)
+                            j = f'B{j[1:]}'
+                        while j[1:] != i[1:]:
+                            self.anti_func['B']()
+                            j = neighbors[j]
+                        while self.corners[i] != temp_values[i]:
+                            algo(j)
+                        break
+
         daisy()
         white_cross()
         white_corners()
-        
+
     def second_layer(self):
         """
         Solve Second Layer of the Cube
@@ -365,13 +370,13 @@ class Cube:
             self.func[s2]()
             self.anti_func[s1]()
             self.anti_func[s2]()
-                
+
         def algo2(s1, s2):
             self.anti_func[s1]()
             self.anti_func[s2]()
             self.func[s1]()
             self.func[s2]()
-                
+
         def left(val):
             val = sorted(val)
             key = int(f'{val[0]}{val[1]}')
@@ -379,7 +384,7 @@ class Cube:
             f_s = {12: 'U', 13: 'R', 24: 'L', 34: 'D'}
             algo2('B', l_s[key])
             algo1('B', f_s[key])
-            
+
         def right(val):
             val = sorted(val)
             key = int(f'{val[0]}{val[1]}')
@@ -387,18 +392,18 @@ class Cube:
             f_s = {12: 'L', 13: 'U', 24: 'D', 34: 'R'}
             algo1('B', r_s[key])
             algo2('B', f_s[key])
-            
+
         def check_pos(key, val):
             if self.values[key[1]] == val[1]:
                 return True
             return False
-            
+
         def correct_pos(key, val):
             i1, i2 = self.values[key[0]], self.values[key[1]]
             if i1 == val[0] and i2 == val[1]:
                 return True
             return False
-            
+
         def place(v):
             lefts = [121, 133, 242, 141]
             tc = self.s_centers['B']
@@ -437,7 +442,7 @@ class Cube:
                 else:
                     k = correctables[0]
                     left(mc[k][:])
-    
+
     def last_layer(self):
         """
         Solve Last Layer of the Cube
@@ -453,7 +458,7 @@ class Cube:
                 s = "RBU"
                 for i in s:
                     self.anti_func[i]()
-            
+
             for n in range(4):
                 tc = self.s_centers['B']
                 corrects = []
@@ -483,7 +488,7 @@ class Cube:
                         elif s1 in ws2 and s2 in ws2:
                             self.anti_func['B']()
                         algo()
-        
+
         def permute_edges():
             """
             Solve oriented Edges
@@ -497,18 +502,18 @@ class Cube:
                 for i in s:
                     self.func[i]()
                 self.anti_func['R']()
-            
+
             def done():
                 t_c = self.s_centers['B']
                 k = [1, 2, 3, 4]
                 v = []
                 for k_ in k:
                     v.append(t_c[f'B{self.itv[k_]}'][1])
-                
+
                 if k == v:
                     return True
                 return False
-            
+
             def check_opps():
                 opps = {'BU': 'BD', 'BD': 'BU',
                         'BL': 'BR', 'BR': 'BL'}
@@ -526,7 +531,7 @@ class Cube:
                         self.func['B']()
                     return True
                 return False
-                
+
             def check_neibs():
                 neigbs = {'BU': 'BR', 'BR': 'BD',
                           'BD': 'BL', 'BL': 'BU'}
@@ -545,7 +550,7 @@ class Cube:
                         self.func['B']()
                     return True
                 return False
-            
+
             while True:
                 if check_opps() and not check_neibs():
                     algo()
@@ -553,12 +558,12 @@ class Cube:
                     algo()
                 elif done():
                     break
-            
+
             temp = self.s_centers['B']['BU'][1]
             d = {1: 0, 2: 1, 3: 3, 4: 2}
             for i in range(d[temp]):
                 self.func['B']()
-        
+
         def permute_corners():
             """
             Permute Corners
@@ -572,15 +577,15 @@ class Cube:
                 self.anti_func['R']()
                 self.anti_func['B']()
                 self.func['L']()
-            
+
             def check_pos(pos):
-                l_n = {'BUL': 'BL', 'BUR': 'BU', 
+                l_n = {'BUL': 'BL', 'BUR': 'BU',
                        'BDR': 'BR', 'BDL': 'BD'}
-                r_n = {'BUL': 'BU', 'BUR': 'BR', 
+                r_n = {'BUL': 'BU', 'BUR': 'BR',
                        'BDR': 'BD', 'BDL': 'BL'}
                 lcv = self.centers[l_n[pos]][1]
                 rcv = self.centers[r_n[pos]][1]
-                
+
                 vals1 = sorted([lcv, rcv])
                 val = self.corners[pos][:]
                 val.remove(5)
@@ -588,7 +593,7 @@ class Cube:
                 if vals1 == vals2:
                     return True
                 return False
-            
+
             def correct_one():
                 for i in range(4):
                     if check_pos('BUR'):
@@ -598,7 +603,7 @@ class Cube:
                 else:
                     algo()
                     correct_one()
-            
+
             correct_one()
             yck = (self.yellow_cor.keys())
             while True:
@@ -615,7 +620,7 @@ class Cube:
                 else:
                     algo()
                     algo()
-                    
+
         def orient_corners():
             """
             Orient permuted Corners in the correct Orientation
@@ -625,30 +630,30 @@ class Cube:
                 self.anti_func['F']()
                 self.func['R']()
                 self.func['F']()
-                
+
             def check_pos(pos):
-                l_n = {'BUL': 'BL', 'BUR': 'BU', 
+                l_n = {'BUL': 'BL', 'BUR': 'BU',
                        'BDR': 'BR', 'BDL': 'BD'}
-                r_n = {'BUL': 'BU', 'BUR': 'BR', 
+                r_n = {'BUL': 'BU', 'BUR': 'BR',
                        'BDR': 'BD', 'BDL': 'BL'}
                 lcv = self.centers[l_n[pos]][1]
                 rcv = self.centers[r_n[pos]][1]
-                
+
                 vals1 = sorted([lcv, rcv])
                 val = self.corners[pos][:]
-                
+
                 val.remove(5)
                 vals2 = sorted(val)
                 if vals1 == vals2:
                     return True
                 return False
-            
+
             def correct(p):
                 val = self.corners[p]
                 if val[0] == 5:
                     return True
                 return False
-            
+
             yck = (self.yellow_cor.keys())
             for s in range(4):
                 while not correct('BUR'):
@@ -657,7 +662,7 @@ class Cube:
                 self.func['B']()
                 while not check_pos('BUR'):
                     self.func['B']()
-        
+
         orient_edges()
         permute_edges()
         permute_corners()
