@@ -78,26 +78,6 @@ class MainWindow(Screen):
 
         self.bind(pos=self.update, size=self.update)
 
-    def on_pre_enter(self, *args):
-        EventLoop.window.bind(on_keyboard=self.hook_keyboard)
-
-    def hook_keyboard(self, window, key, *args):
-        if self.manager.current != 'main':
-            return True
-
-        if key == 108:
-            self.rotate('L', None)
-        elif key == 114:
-            self.rotate('R', None)
-        elif key == 102:
-            self.rotate('F', None)
-        elif key == 100:
-            self.rotate('D', None)
-        elif key == 98:
-            self.rotate('B', None)
-        elif key == 117:
-            self.rotate('U', None)
-
     def update_cube(self):
         l = copy(self.cube.cube['L'])
         f = copy(self.cube.cube['F'])
