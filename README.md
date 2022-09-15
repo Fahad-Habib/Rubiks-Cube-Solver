@@ -23,4 +23,4 @@ Support this project by leaving a :star:
 ## Using the Program
 
  - Clone the repository.
- - No need to install any additional library.
+ - Install kivy library using "pip install kivy".
