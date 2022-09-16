@@ -18,9 +18,9 @@ Support this project by leaving a :star:
    - Permute Corners
    - Orient Corners
 
-**Solution of the cube is stored in an array.**
+**Solution of the cube is stored in an array and in a txt file.**
 
 ## Using the Program
 
  - Clone the repository.
- - Install kivy library using "pip install kivy".
+ - Install requirements: `pip3 install -r requirements.txt`.
